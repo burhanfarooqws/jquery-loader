@@ -18,6 +18,7 @@
             fontColor: false,  //文字颜色
             position: [0, 0, 0, 0],    //偏移设置 上左高宽
             title: '', //文字
+            zIndex: 'auto',
             isOnly: true,
             imgUrl: 'images/loading[size].gif',
             onShow: function () {
@@ -120,7 +121,23 @@
                 'width': width + ops.position[3],
                 'left': left,
                 'border-radius': scope.css('border-radius')
-            }).css(ops.css);
+            });
+
+            //新增自动计算zIndex
+            if (ops.zIndex == 'auto') {
+                var parent = this.scope;
+                while (!parent.is('body')) {
+                    var offsetParent = parent.offsetParent();
+                    var pIndex = parseInt(offsetParent.css('z-index'));
+                    if (pIndex > 0) {
+                        ops.zIndex = pIndex + 1;
+                        break;
+                    }
+                    parent = offsetParent;
+                }
+            }
+            $.isNumeric(ops.zIndex) && loading.css('z-index', ops.zIndex);
+            loading.css(ops.css);
 
             var loader = loading.children();
             loader.css({
