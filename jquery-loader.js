@@ -126,7 +126,7 @@
             //新增自动计算zIndex
             if (ops.zIndex == 'auto') {
                 var parent = this.scope;
-                while (!parent.is('body')) {
+                while (!(parent.is('body') || parent.is('html'))) {
                     var offsetParent = parent.offsetParent();
                     var pIndex = parseInt(offsetParent.css('z-index'));
                     if (pIndex > 0) {
